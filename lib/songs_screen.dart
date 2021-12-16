@@ -166,7 +166,6 @@ class _SongsScreenState extends State<SongsScreen> with TickerProviderStateMixin
   }
 
   Future<void> _deleteSong(String _path, int _index) async {
-    //final File dir = File(path);
     final Directory dir = Directory(_path);
     await dir.delete(recursive: true);
     widget._songs.removeAt(_index);
@@ -220,10 +219,8 @@ class _SongsScreenState extends State<SongsScreen> with TickerProviderStateMixin
 
   void _handleTap(int _index, bool _shouldRestart, bool _shouldPlay) {
     if (_index != _currentIndex && _currentlyPlaying.value == true) {
-      //_player.pause();
       _controllers[_index].reverse();
       _originalControllers[_currentIndex].reverse();
-      //_currentlyPlaying.value = false;
       _isPlaying[_index] = false;
       _originalIsPlaying[_currentIndex] = false;
     }
@@ -379,7 +376,6 @@ class _SongsScreenState extends State<SongsScreen> with TickerProviderStateMixin
                                 ),
                               ),
                             ),
-                            //const Icon(Icons.person, size: 28.0, color: MyColors.accentColor),
                             ClipRRect(
                               borderRadius: const BorderRadius.all(Radius.circular(8.0)),
                               child: (widget._songs[_artistIndex].albumArtwork != null && File(widget._songs[_artistIndex].albumArtwork).existsSync() == true)
@@ -428,7 +424,6 @@ class _SongsScreenState extends State<SongsScreen> with TickerProviderStateMixin
                                     ),
                                   ),
                                 ),
-                                //const Icon(Icons.album, size: 28.0, color: MyColors.accentColor),
                                 ClipRRect(
                                   borderRadius: const BorderRadius.all(Radius.circular(8.0)),
                                   child: (widget._songs[_albumIndex].albumArtwork != null && File(widget._songs[_albumIndex].albumArtwork).existsSync() == true)
