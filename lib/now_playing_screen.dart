@@ -184,7 +184,6 @@ class _NowPlayingScreenState extends State<NowPlayingScreen> with TickerProvider
             valueListenable: _currentlyPlaying,
             builder: (BuildContext context, bool value, Widget? child) {
               return Stack(
-                //clipBehavior: Clip.none,
                 alignment: Alignment.center,
                 children: <Widget>[
                   ImageFiltered(
@@ -194,7 +193,6 @@ class _NowPlayingScreenState extends State<NowPlayingScreen> with TickerProvider
                             File(widget._songs[widget._songIndex].albumArtwork),
                             height: MediaQuery.of(context).size.height,
                             width: MediaQuery.of(context).size.width,
-                            //fit: BoxFit.cover,
                             fit: BoxFit.fitHeight,
                             color: (value == true) ? Colors.black12 : Colors.black54,
                             colorBlendMode: BlendMode.darken,
@@ -203,7 +201,6 @@ class _NowPlayingScreenState extends State<NowPlayingScreen> with TickerProvider
                             'assets/neon_headset.jpg',
                             height: MediaQuery.of(context).size.height,
                             width: MediaQuery.of(context).size.width,
-                            //fit: BoxFit.cover,
                             fit: BoxFit.fitHeight,
                             color: (value == true) ? Colors.black12 : Colors.black54,
                             colorBlendMode: BlendMode.darken,
