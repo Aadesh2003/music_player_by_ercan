@@ -1,5 +1,4 @@
 // ignore_for_file: use_key_in_widget_constructors
-//import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_audio_query/flutter_audio_query.dart';
@@ -61,7 +60,6 @@ class AlbumScreen extends StatelessWidget {
                         : Image.asset('assets/neon_headset.jpg'),
                   ),
                   contentPadding: const EdgeInsets.only(left: 8.0, right: 16.0, top: 4.0),
-                  //horizontalTitleGap: 8.0,
                   dense: true,
                   visualDensity: const VisualDensity(horizontal: 1.0, vertical: 1.0),
                 ),
