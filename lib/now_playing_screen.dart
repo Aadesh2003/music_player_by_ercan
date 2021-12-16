@@ -401,12 +401,6 @@ class _NowPlayingScreenState extends State<NowPlayingScreen> with TickerProvider
                                       padding: EdgeInsets.zero,
                                       visualDensity: VisualDensity.compact,
                                       onPressed: () {
-                                        /*if (_controller.status == AnimationStatus.completed) {
-                                          _controller.reverse();
-                                        } else if (_controller.status == AnimationStatus.dismissed) {
-                                          _controller.forward();
-                                        }
-                                        setState(() {});*/
                                         widget._handleTap(widget._songIndex, false, true);
                                       },
                                       icon: AnimatedIcon(
