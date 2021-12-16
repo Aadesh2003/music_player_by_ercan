@@ -111,7 +111,6 @@ class MyApp extends StatelessWidget {
                       flags: <int>[Flag.FLAG_ACTIVITY_NEW_TASK],
                     );
                     await intent.launch();
-                    //openAppSettings();
                   },
                   child: const Text('GRANT PERMISSION'),
                 ),
