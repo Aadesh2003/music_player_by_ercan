@@ -1132,16 +1132,7 @@ class _SongsScreenState extends State<SongsScreen> with TickerProviderStateMixin
       useRootNavigator: true,
       context: context,
       pageBuilder: (BuildContext context, Animation<double> anim1, Animation<double> anim2) {
-        return /*Center(
-          child: ClipRRect(
-            borderRadius: const BorderRadius.all(Radius.circular(12.0)),
-            child: FittedBox(
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width - 80,
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 25.2, sigmaY: 25.2),
-                  child: */
-            AlertDialog(
+        return AlertDialog(
           title: const Text(
             'Delete Song',
             textAlign: TextAlign.center,
@@ -1177,13 +1168,7 @@ class _SongsScreenState extends State<SongsScreen> with TickerProviderStateMixin
               child: const Text('CANCEL'),
             ),
           ],
-        ) /*,
-                ),
-              ),
-            ),
-          ),
-        )*/
-            ;
+        );
       },
       transitionBuilder: (BuildContext context, Animation<double> anim1, Animation<double> anim2, Widget child) {
         return FadeTransition(
