@@ -9,12 +9,17 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_audio_query: ^0.3.5+6
+
+#  flutter_audio_query: ^0.3.5+6
+  on_audio_query: ^2.6.1
   permission_handler: ^8.2.6
   audioplayers: ^0.20.1
-  shared_preferences: ^2.0.8
+  shared_preferences: ^2.0.15
   auto_size_text: ^3.0.0
-  android_intent_plus: ^3.0.2
+  json_serializable: ^6.3.1
+  flutter_slidable: ^2.0.0
+  audio_manager: ^0.8.2
+#  android_intent_plus: ^3.0.2
 
 dev_dependencies:
   flutter_lints: ^1.0.4
@@ -25,6 +30,7 @@ flutter:
     - assets/neon_headset.jpg
     - assets/icon.png
     - assets/image.png
+    - assets/music.png
   fonts:
     - family: Manrope
       fonts:

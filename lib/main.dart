@@ -1,10 +1,8 @@
-// ignore_for_file: use_key_in_widget_constructors
-import 'package:android_intent_plus/android_intent.dart';
-import 'package:android_intent_plus/flag.dart';
+// ignore_for_file: use_key_in_widget_constructors, prefer_single_quotes, unnecessary_null_comparison, avoid_print, must_be_immutable, always_declare_return_types, always_specify_types
 import 'package:flutter/material.dart';
-import 'package:flutter_audio_query/flutter_audio_query.dart';
+import 'package:music_player_by_ercan/screens/songs_screen.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:music_player_by_ercan/songs_screen.dart';
 import 'colors.dart';
 import 'dart:io';
 
@@ -12,15 +10,18 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Permission.storage.request();
   PermissionStatus _status = await Permission.storage.status;
-  List<SongInfo> _songs = <SongInfo>[];
-  List<ArtistInfo> _artists = <ArtistInfo>[];
-  List<AlbumInfo> _albums = <AlbumInfo>[];
+  List<SongModel> _songs = <SongModel>[];
+  List<ArtistModel> _artists = <ArtistModel>[];
+  List<AlbumModel> _albums = <AlbumModel>[];
   if (_status.isGranted == true) {
-    _songs = await FlutterAudioQuery().getSongs();
-    _artists = await FlutterAudioQuery().getArtists();
-    _albums = await FlutterAudioQuery().getAlbums();
+    print("=-=-=-=-=-=-=-= permission granted =-=-=-=-=-=-=");
+    _songs = await OnAudioQuery().querySongs();
+    print("=-=-=-=-=-=-=-= length of song = ${_songs.length}=-=-=-=-=-=-=");
+    print("=-=-=-=-=-=-=-= path of song = ${_songs.first.data}=-=-=-=-=-=-=");
+    _artists = await OnAudioQuery().queryArtists();
+    _albums = await OnAudioQuery().queryAlbums(ignoreCase: true);
     for (int i = 0; i < _songs.length; i++) {
-      if (_songs[i].filePath == null || File(_songs[i].filePath).existsSync() != true) {
+      if (_songs[i].data == null || File(_songs[i].data).existsSync() != true) {
         _songs.removeAt(i);
         i--;
       }
@@ -28,7 +29,8 @@ Future<void> main() async {
   }
   runApp(MaterialApp(
     color: MyColors.darkColor,
-    title: 'Music Player by Ercan',
+    title: 'Music Player',
+    debugShowCheckedModeBanner: false,
     darkTheme: ThemeData(
       fontFamily: 'Manrope',
       brightness: Brightness.dark,
@@ -66,18 +68,46 @@ Future<void> main() async {
   ));
 }
 
-class MyApp extends StatelessWidget {
-  final List<SongInfo> _songs;
-  final List<ArtistInfo> _artists;
-  final List<AlbumInfo> _albums;
+class MyApp extends StatefulWidget {
+  List<SongModel> _songs;
+   List<ArtistModel> _artists;
+   List<AlbumModel> _albums;
   final PermissionStatus _status;
 
-  const MyApp(this._songs, this._artists, this._albums, this._status);
+   MyApp(this._songs, this._artists, this._albums, this._status);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    querySongs();
+  }
+  List<SongModel>? songs;
+  var loading = true;
+
+  querySongs() async {
+    if(widget._songs.isEmpty){
+      print("=-=-=-=-=-= empty songs =-=-=-=-=-=");
+      widget._songs = await OnAudioQuery().querySongs();
+      print("=-=-=-=-=-=-=-= length of song = ${widget._songs.length}=-=-=-=-=-=-=");
+      print("=-=-=-=-=-=-=-= path of song = ${widget._songs.first.data}=-=-=-=-=-=-=");
+      widget._artists = await OnAudioQuery().queryArtists();
+      widget._albums = await OnAudioQuery().queryAlbums(ignoreCase: true);
+    }
+    loading = false;
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
-    if (_status.isGranted == true) {
-      return SongsScreen(_songs, _artists, _albums);
+    if (widget._status.isGranted == true && !loading) {
+      return SongsScreen(widget._songs, widget._artists, widget._albums);
     } else {
       return Scaffold(
         body: Center(
@@ -105,12 +135,12 @@ class MyApp extends StatelessWidget {
                 TextButton(
                   style: ButtonStyle(foregroundColor: MaterialStateColor.resolveWith((Set<MaterialState> states) => Colors.white)),
                   onPressed: () async {
-                    AndroidIntent intent = const AndroidIntent(
-                      action: 'android.settings.APPLICATION_DETAILS_SETTINGS',
-                      data: 'package:com.musicplayerbyercan.music_player_by_ercan',
-                      flags: <int>[Flag.FLAG_ACTIVITY_NEW_TASK],
-                    );
-                    await intent.launch();
+                    // AndroidIntent intent = const AndroidIntent(
+                    //   action: 'android.settings.APPLICATION_DETAILS_SETTINGS',
+                    //   data: 'package:com.musicplayerbyercan.music_player_by_ercan',
+                    //   flags: <int>[Flag.FLAG_ACTIVITY_NEW_TASK],
+                    // );
+                    // await intent.launch();
                   },
                   child: const Text('GRANT PERMISSION'),
                 ),

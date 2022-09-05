@@ -1,18 +1,21 @@
-// ignore_for_file: use_key_in_widget_constructors
-import 'dart:io';
+// ignore_for_file: use_key_in_widget_constructors, non_constant_identifier_names, unrelated_type_equality_checks
 import 'package:flutter/material.dart';
-import 'package:flutter_audio_query/flutter_audio_query.dart';
-import 'colors.dart';
+import 'package:on_audio_query/on_audio_query.dart';
+import '../colors.dart';
+
+
+//Problem in this screen
 
 class ArtistScreen extends StatelessWidget {
-  final List<ArtistInfo> _artists;
-  final List<AlbumInfo> _albums;
+  final List<ArtistModel> _artists;
+  final List<AlbumModel> _albums;
   final Function _goToArtist, _goToAlbum;
 
   const ArtistScreen(this._artists, this._albums, this._goToArtist, this._goToAlbum);
 
   void _showAlbums(int index, BuildContext _context) async {
-    List<AlbumInfo> _Albums = await FlutterAudioQuery().getAlbumsFromArtist(artist: _artists[index].name);
+    // getAlbumsFromArtist(artist: _artists[index].name)
+    List<SongModel> _Albums = await OnAudioQuery().queryAudiosFrom(AudiosFromType.ARTIST, _artists[index]);
     showModalBottomSheet<void>(
       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12.0))),
       isScrollControlled: true,
@@ -33,7 +36,7 @@ class ArtistScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: Text(
-                  'Albums by ${_artists[index].name}',
+                  'Albums by ${_artists[index].artist}',
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     fontSize: 24.0,
@@ -46,7 +49,7 @@ class ArtistScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisSize: MainAxisSize.min,
                 children: _Albums.map(
-                  (AlbumInfo e) => Column(
+                  (SongModel e) => Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
@@ -55,12 +58,17 @@ class ArtistScreen extends StatelessWidget {
                         shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12.0))),
                         leading: ClipRRect(
                           borderRadius: const BorderRadius.all(Radius.circular(8.0)),
-                          child: (e.albumArt != null && File(e.albumArt).existsSync() == true)
-                              ? Image.file(
-                                  File(e.albumArt),
-                                  fit: BoxFit.contain,
-                                )
-                              : Image.asset('assets/neon_headset.jpg'),
+                          child: QueryArtworkWidget(
+                            id: e.id,
+                            type: ArtworkType.AUDIO,
+
+                          ),
+                          // child: (e. != null && File(e.albumArt).existsSync() == true)
+                          //     ? Image.file(
+                          //         File(e.albumArt),
+                          //         fit: BoxFit.contain,
+                          //       )
+                          //     : Image.asset('assets/neon_headset.jpg'),
                         ),
                         title: Text(
                           e.title,
@@ -73,7 +81,7 @@ class ArtistScreen extends StatelessWidget {
                           ),
                         ),
                         subtitle: Text(
-                          e.artist,
+                          e.artist!,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(color: Colors.white),
@@ -81,7 +89,7 @@ class ArtistScreen extends StatelessWidget {
                         onTap: () {
                           Navigator.of(context).pop();
                           for (int i = 0; i < _albums.length; i++) {
-                            if (_albums[i].title == e.title) {
+                            if (_albums[i].album == e.album) {
                               _goToAlbum(i, 1);
                               break;
                             }
@@ -128,7 +136,7 @@ class ArtistScreen extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(5.0, 7.5, 5.0, 0.0),
               child: ListTile(
                 title: Text(
-                  _artists[index].name,
+                  _artists[index].artist,
                   maxLines: 1,
                   overflow: TextOverflow.fade,
                   softWrap: false,
@@ -146,15 +154,6 @@ class ArtistScreen extends StatelessWidget {
                 onTap: () {
                   _goToArtist(index, 1);
                 },
-                leading: ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(8.0)),
-                  child: (_artists[index].artistArtPath != null && File(_artists[index].artistArtPath).existsSync() == true)
-                      ? Image.file(
-                          File(_artists[index].artistArtPath),
-                          fit: BoxFit.contain,
-                        )
-                      : Image.asset('assets/neon_headset.jpg'),
-                ),
                 trailing: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   mainAxisSize: MainAxisSize.min,

@@ -1,7 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.musicplayerbyercan.music_player_by_ercan">
-
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission
@@ -11,8 +10,9 @@
     <application
         android:allowBackup="true"
         android:fullBackupOnly="true"
+        android:usesCleartextTraffic="true"
         android:icon="@mipmap/launcher_icon"
-        android:label="Music Player by Ercan">
+        android:label="Music Player">
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"

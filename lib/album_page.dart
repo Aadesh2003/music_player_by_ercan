@@ -1,16 +1,17 @@
 // ignore_for_file: use_key_in_widget_constructors
+import 'package:audio_manager/audio_manager.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_audio_query/flutter_audio_query.dart';
-import 'package:music_player_by_ercan/songs_screen.dart';
+import 'package:music_player_by_ercan/screens/songs_screen.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 import 'colors.dart';
 
 class AlbumPage extends StatefulWidget {
-  final List<SongInfo> _songs;
+  final List<SongModel> _songs;
   final List<bool> _isPlaying;
   final String _album;
   final Function _handleTap, _showBottomSheet;
-  final AudioPlayer _player;
+  final AudioManager _player;
   const AlbumPage(this._songs, this._isPlaying, this._album, this._handleTap, this._player, this._showBottomSheet);
 
   @override
@@ -18,7 +19,7 @@ class AlbumPage extends StatefulWidget {
 }
 
 class _AlbumPageState extends State<AlbumPage> with TickerProviderStateMixin {
-  final List<SongInfo> _songs = <SongInfo>[];
+  final List<SongModel> _songs = <SongModel>[];
   final List<bool> _isPlaying = <bool>[];
   final List<AnimationController> _controllers = <AnimationController>[];
   int _currentIndex = 0;
@@ -36,8 +37,8 @@ class _AlbumPageState extends State<AlbumPage> with TickerProviderStateMixin {
         _isPlaying.add(widget._isPlaying[i]);
       }
     }
-    widget._player.onPlayerStateChanged.listen((PlayerState s) {
-      if (s != PlayerState.PLAYING) {
+    widget._player.onEvents((event,arg) {
+      if (widget._player.isPlaying) {
         _controllers[_currentIndex].reverse();
         setState(() {
           _isPlaying[_currentIndex] = false;
